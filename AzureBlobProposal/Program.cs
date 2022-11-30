@@ -67,8 +67,9 @@ class Program
     public static void UploadFileToStorageProposed(string storageConnectionString, string containerName, string blobName, string filePath)
     {
         BlobStorageClient blobStorageClient = new BlobStorageClient(storageConnectionString);
+        
         blobStorageClient.CreateBlobContainerIfNotExists(containerName);
-        blobStorageClient.Upload(containerName, blobName, filePath);
+        blobStorageClient.UploadFromFile(containerName, blobName, filePath);
     }
 
 
@@ -95,20 +96,20 @@ class Program
         BlobStorageClient blobStorageClient = new BlobStorageClient(storageConnectionString);
 
         blobStorageClient.CreateBlobContainerIfNotExists(containerName);
-
+        
         foreach (var file in files)
         {
             var blobName = Path.GetFileName(file);
             var filePath = file;
 
-            blobStorageClient.Upload(containerName, blobName, filePath);
+            blobStorageClient.UploadFromFile(containerName, blobName, filePath);
         }
 
         //foreach (var file in files)
-        //    blobStorageClient.Upload(containerName, Path.GetFileName(file), file);
+        //    blobStorageClient.UploadFromFile(containerName, Path.GetFileName(file), file);
 
         // Or even better
-        // files.Select(file => blobStorageClient.Upload(containerName, Path.GetFileName(file), file));
+        // var responses = files.Select(file => blobStorageClient.UploadFromFile(containerName, Path.GetFileName(file), file));
     }
 
 
@@ -133,14 +134,14 @@ class Program
         BlobStorageClient blobStorageClient = new BlobStorageClient(storageConnectionString);
         blobStorageClient.CreateBlobContainerIfNotExists(containerName);
 
-        blobStorageClient.Upload(containerName, blobName, filePath, "image/svg+xml");
+        blobStorageClient.UploadFromFile(containerName, blobName, filePath, "image/svg+xml");
     }
 
 
     public static void UploadFileToStorageBestSolution(string storageConnectionString, string containerName, string blobName, string filePath)
     {
         BlobStorageClient blobStorageClient = new BlobStorageClient(storageConnectionString, autoCreateContainers: true);
-        blobStorageClient.Upload(containerName, blobName, filePath, "image/svg+xml");
+        blobStorageClient.UploadFromFile(containerName, blobName, filePath, "image/svg+xml");
     }
 
 
@@ -153,9 +154,25 @@ class Program
 
         foreach (var blob in blobs)
         {
-            Console.WriteLine($"{blob.Name.PadRight(20)}    {blob.Properties.CreatedOn}   {blob.Properties.ContentLength}  {blob.Properties.AccessTier?.ToString()}");
-        }
+            Console.WriteLine($"{blob.Name.PadRight(20)}    {blob.Properties.CreatedOn}  {blob.Properties.ContentLength}  {blob.Properties.AccessTier?.ToString()}");
+        }        
     }
+
+
+    public static void GetBlobsNewApi(string storageConnectionString, string containerName)
+    {
+        BlobStorageClient blobStorageClient = new BlobStorageClient(storageConnectionString);
+
+        var blobs = blobStorageClient.GetBlobs(containerName);
+
+        foreach (var blob in blobs)
+        {
+            Console.WriteLine($"{blob.Name.PadRight(20)}    {blob.Properties.CreatedOn}  {blob.Properties.ContentLength}  {blob.Properties.AccessTier?.ToString()}");
+        }
+
+        //blobStorageClient.DownloadBlob()
+    }
+
 
 
 

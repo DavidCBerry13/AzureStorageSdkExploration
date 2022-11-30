@@ -232,6 +232,247 @@ namespace BlobStorageExtensions
 
 
 
+
+
+
+        #region Upload From File - Sync
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromFile(string blobContainerName, string blobName, string filePath)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(filePath);
+        }
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromFile(string blobContainerName, string blobName, string filePath, CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(filePath, cancellationToken);
+        }
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromFile(string blobContainerName, string blobName, string filePath, bool overwrite = false,
+            CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(filePath, overwrite, cancellationToken);
+        }
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromFile(string blobContainerName, string blobName, string filePath, BlobUploadOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(filePath, options, cancellationToken);
+        }
+
+
+
+
+
+        // ADDED BY DAVID
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromFile(string blobContainerName, string blobName, string filePath, string contentType,
+            bool overwrite = false, CancellationToken cancellationToken = default)
+        {
+            // Check if the container exists and create it if it doesn't
+            if (autoCreateContainers)
+            {
+                var containerClient = GetBlobContainerClient(blobContainerName);
+                containerClient.CreateIfNotExists();
+            }
+
+            // Now upload the blob
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            var options = new BlobUploadOptions() { HttpHeaders = new BlobHttpHeaders() { ContentType = contentType } };
+
+            return blobClient.Upload(filePath, options, cancellationToken);
+        }
+
+        // END ADDED BY DAVID
+
+
+        #endregion
+
+
+        #region Upload From File - Async
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, string filePath)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(filePath);
+        }
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, string filePath,
+            CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(filePath, cancellationToken);
+        }
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, string filePath,
+            bool overwrite = false, CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(filePath, overwrite, cancellationToken);
+        }
+
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, string filePath,
+            BlobUploadOptions options, CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(filePath, options, cancellationToken);
+        }
+
+
+        #endregion
+
+
+        #region Upload From Stream - Sync
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromStream(string blobContainerName, string blobName, Stream content)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(content);
+        }
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromStream(string blobContainerName, string blobName, Stream content, 
+            CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(content, cancellationToken);
+        }
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromStream(string blobContainerName, string blobName, Stream content, bool overwrite = false,
+            CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(content, overwrite, cancellationToken);
+        }
+
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromStream(string blobContainerName, string blobName, Stream content, BlobUploadOptions options,
+            CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(content, options, cancellationToken);
+        }
+
+        #endregion
+
+
+        #region Upload from Stream - Async
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadFromStreamAsync(string blobContainerName, string blobName, Stream content)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(content);
+        }
+
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadFromStreamAsync(string blobContainerName, string blobName, Stream content,
+            CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(content, cancellationToken);
+        }
+
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadFromStreamAsync(string blobContainerName, string blobName, Stream content,
+            bool overwrite = false, CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(content, overwrite, cancellationToken);
+        }
+
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadFromStreamAsync(string blobContainerName, string blobName, Stream content,
+            BlobUploadOptions options, CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(content, options, cancellationToken);
+        }
+
+        #endregion
+
+
+        #region Upload From Binary Data - Sync
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromBinaryContent(string blobContainerName, string blobName, BinaryData content)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(content);
+        }
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromBinaryContent(string blobContainerName, string blobName, BinaryData content,
+            CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(content, cancellationToken);
+        }
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromBinaryContent(string blobContainerName, string blobName, BinaryData content, 
+            bool overwrite = false, CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(content, overwrite, cancellationToken);
+        }
+
+
+        public virtual Azure.Response<BlobContentInfo> UploadFromBinaryContent(string blobContainerName, string blobName, BinaryData content, 
+            BlobUploadOptions options, CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return blobClient.Upload(content, options, cancellationToken);
+        }
+
+
+        #endregion
+
+
+        #region Upload from Binary Data - Async
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadFromBinaryContentAsync(string blobContainerName, string blobName, BinaryData content)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(content);
+        }
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadFromBinaryContentAsync(string blobContainerName, string blobName, BinaryData content,
+            CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(content, cancellationToken);
+        }
+
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadFromBinaryContentAsync(string blobContainerName, string blobName, BinaryData content,
+            bool overwrite = false, CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(content, overwrite, cancellationToken);
+        }
+
+
+        public virtual async Task<Azure.Response<BlobContentInfo>> UploadBinaryContentAsync(string blobContainerName, string blobName, BinaryData content,
+            BlobUploadOptions options, CancellationToken cancellationToken = default)
+        {
+            var blobClient = GetBlobClient(blobContainerName, blobName);
+            return await blobClient.UploadAsync(content, options, cancellationToken);
+        }
+
+        #endregion
+
+
+        #region Open Write Methods
+
         public virtual Stream OpenWrite(string blobContainerName, string blobName, bool overwrite, BlobOpenWriteOptions options = default,
             CancellationToken cancellationToken = default)
         {
@@ -251,214 +492,7 @@ namespace BlobStorageExtensions
             return await blobClient.OpenWriteAsync(overwrite, options, cancellationToken);
         }
 
-
-        // Helper Method -- TODO - Need to fold in the crypto stuff so the client gets created with the right options
-        //protected virtual BlobClient GetBlobClient(string blobContainerName, string blobName)
-        //{
-        //    var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
-        //    var blobClient = blobContainerClient.GetBlobClient(blobName);
-        //    return blobClient;
-        //}
-
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, string filePath, BlobUploadOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(filePath, options, cancellationToken);
-        }
-
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, Stream content, bool overwrite = false,
-            CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(content, overwrite, cancellationToken);
-        }
-
-
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, Stream content, BlobUploadOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(content, options, cancellationToken);
-        }
-
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, BinaryData content, bool overwrite = false,
-            CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(content, overwrite, cancellationToken);
-        }
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, string filePath, bool overwrite = false,
-            CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(filePath, overwrite, cancellationToken);
-        }
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, string filePath, CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(filePath, cancellationToken);
-        }
-
-
-
-        // ADDED BY DAVID
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, string filePath, string contentType, 
-            bool overwrite = false, CancellationToken cancellationToken = default)
-        {
-            // Check if the container exists and create it if it doesn't
-            if (autoCreateContainers)
-            {
-                var containerClient = GetBlobContainerClient(blobContainerName);
-                containerClient.CreateIfNotExists();
-            }
-
-            // Now upload the blob
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            var options = new BlobUploadOptions() { HttpHeaders = new BlobHttpHeaders() { ContentType = contentType } };
-
-            return blobClient.Upload(filePath, options, cancellationToken);
-        }
-
-        // END ADDED BY DAVID
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, Stream content, CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(content, cancellationToken);
-        }
-
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, BinaryData content, CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(content, cancellationToken);
-        }
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, string filePath)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(filePath);
-        }
-
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, Stream content)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(content);
-        }
-
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, BinaryData content)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(content);
-        }
-
-
-        public virtual Azure.Response<BlobContentInfo> Upload(string blobContainerName, string blobName, BinaryData content, BlobUploadOptions options,
-            CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return blobClient.Upload(content, options, cancellationToken);
-        }
-
-
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, string filePath,
-            bool overwrite = false, CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(filePath, overwrite, cancellationToken);
-        }
-
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, string filePath,
-            BlobUploadOptions options, CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(filePath, options, cancellationToken);
-        }
-
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, Stream content,
-            bool overwrite = false, CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(content, overwrite, cancellationToken);
-        }
-
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, Stream content,
-            BlobUploadOptions options, CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(content, options, cancellationToken);
-        }
-
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, BinaryData content,
-            bool overwrite = false, CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(content, overwrite, cancellationToken);
-        }
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, string filePath,
-            CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(filePath, cancellationToken);
-        }
-
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, Stream content,
-            CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(content, cancellationToken);
-        }
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, BinaryData content,
-            CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(content, cancellationToken);
-        }
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, string filePath)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(filePath);
-        }
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, Stream content)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(content);
-        }
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, BinaryData content)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(content);
-        }
-
-
-        public virtual async Task<Azure.Response<BlobContentInfo>> UploadAsync(string blobContainerName, string blobName, BinaryData content,
-            BlobUploadOptions options, CancellationToken cancellationToken = default)
-        {
-            var blobClient = GetBlobClient(blobContainerName, blobName);
-            return await blobClient.UploadAsync(content, options, cancellationToken);
-        }
-
+        #endregion
 
 
         #region Delete Blob
@@ -532,139 +566,173 @@ namespace BlobStorageExtensions
         #endregion
 
 
-        #region Download Blob
+        #region Download Blob - Binary Data - Sync
 
-        public virtual Azure.Response<BlobDownloadResult> DownloadContent(string blobContainerName, string blobName)
+        // ----------------------------------------------------------------------------------------
+        // CHANGE - All of these methods were called DownloadContent().  But they don't just download the content,
+        // they get an object that has the properties and the content of the blob.  So it feels like they should be DownloadBlob()
+        // ----------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Returns a BlobDownloadResult object that contains both the properties and content of the blob, with the the content of the blob
+        /// represented as a BinaryData object.
+        /// </summary>
+        /// <param name="blobContainerName"></param>
+        /// <param name="blobName"></param>
+        /// <returns></returns>
+        public virtual Azure.Response<BlobDownloadResult> DownloadBlob(string blobContainerName, string blobName)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadContent();
         }
 
-        public virtual async Task<Azure.Response<BlobDownloadResult>> DownloadContentAsync(string blobContainerName, string blobName)
-        {
-            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
-            return await blobClient.DownloadContentAsync();
-        }
-
-
-        public virtual Azure.Response<BlobDownloadResult> DownloadContent(string blobContainerName, string blobName,
+        public virtual Azure.Response<BlobDownloadResult> DownloadBlob(string blobContainerName, string blobName,
             CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadContent(cancellationToken);
         }
 
-        public virtual async Task<Azure.Response<BlobDownloadResult>> DownloadContentAsync(string blobContainerName, string blobName,
-            CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
-            return await blobClient.DownloadContentAsync(cancellationToken);
-        }
-
-
-        public virtual Azure.Response<BlobDownloadResult> DownloadContent(string blobContainerName, string blobName,
+        public virtual Azure.Response<BlobDownloadResult> DownloadBlob(string blobContainerName, string blobName,
             BlobDownloadOptions options = default, CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadContent(options, cancellationToken);
         }
 
-        public virtual async Task<Azure.Response<BlobDownloadResult>> DownloadContentAsync(string blobContainerName, string blobName,
+        #endregion
+
+
+        #region Download Blob - BinaryData - Async
+
+        public virtual async Task<Azure.Response<BlobDownloadResult>> DownloadBlobAsync(string blobContainerName, string blobName)
+        {
+            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
+            return await blobClient.DownloadContentAsync();
+        }
+
+        public virtual async Task<Azure.Response<BlobDownloadResult>> DownloadBlobAsync(string blobContainerName, string blobName,
+            CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
+            return await blobClient.DownloadContentAsync(cancellationToken);
+        }
+
+        public virtual async Task<Azure.Response<BlobDownloadResult>> DownloadBlobAsync(string blobContainerName, string blobName,
             BlobDownloadOptions options = default, CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return await blobClient.DownloadContentAsync(options, cancellationToken);
         }
 
+        #endregion
 
-        public virtual Azure.Response<BlobDownloadStreamingResult> DownloadStreaming(string blobContainerName, string blobName,
+
+        public virtual Azure.Response<BlobDownloadStreamingResult> DownloadBlobStreaming(string blobContainerName, string blobName,
             BlobDownloadOptions options = default, CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadStreaming(options, cancellationToken);
         }
 
-        public virtual async Task<Azure.Response<BlobDownloadStreamingResult>> DownloadStreamingAsync(string blobContainerName, string blobName,
+        public virtual async Task<Azure.Response<BlobDownloadStreamingResult>> DownloadBlobStreamingAsync(string blobContainerName, string blobName,
             BlobDownloadOptions options = default, CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return await blobClient.DownloadStreamingAsync(options, cancellationToken);
         }
 
-        public virtual Azure.Response DownloadTo(string blobContainerName, string blobName, string path)
+
+
+        #region Download Blob To File - Sync
+
+        public virtual Azure.Response DownloadBlobToFile(string blobContainerName, string blobName, string path)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadTo(path);
         }
 
-
-        public virtual async Task<Azure.Response> DownloadToAsync(string blobContainerName, string blobName, string path)
-        {
-            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
-            return await blobClient.DownloadToAsync(path);
-        }
-
-        public virtual Azure.Response DownloadTo(string blobContainerName, string blobName, string path, CancellationToken cancellationToken)
+        public virtual Azure.Response DownloadBlobToFile(string blobContainerName, string blobName, string path, CancellationToken cancellationToken)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadTo(path, cancellationToken);
         }
 
-        public virtual async Task<Azure.Response> DownloadToAsync(string blobContainerName, string blobName, string path, CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
-            return await blobClient.DownloadToAsync(path, cancellationToken);
-        }
-
-        public virtual Azure.Response DownloadTo(string blobContainerName, string blobName, string path, BlobDownloadToOptions options,
+        public virtual Azure.Response DownloadBlobToFile(string blobContainerName, string blobName, string path, BlobDownloadToOptions options,
             CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadTo(path, options, cancellationToken);
         }
 
-        public virtual async Task<Azure.Response> DownloadToAsync(string blobContainerName, string blobName, string path,
+        #endregion
+
+
+        #region Download Blob to File - Async
+
+        public virtual async Task<Azure.Response> DownloadBlobToFileAsync(string blobContainerName, string blobName, string path)
+        {
+            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
+            return await blobClient.DownloadToAsync(path);
+        }
+
+        public virtual async Task<Azure.Response> DownloadBlobToFileAsync(string blobContainerName, string blobName, string path, CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
+            return await blobClient.DownloadToAsync(path, cancellationToken);
+        }
+
+        public virtual async Task<Azure.Response> DownloadBlobToFileAsync(string blobContainerName, string blobName, string path,
             BlobDownloadToOptions options, CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return await blobClient.DownloadToAsync(path, options, cancellationToken);
         }
 
+        #endregion
 
-        public virtual Azure.Response DownloadTo(string blobContainerName, string blobName, Stream destination)
+
+
+        #region Download Blob Contents to Stream
+
+        public virtual Azure.Response DownloadBlobToStream(string blobContainerName, string blobName, Stream destination)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadTo(destination);
         }
 
-        public virtual async Task<Azure.Response> DownloadToAsync(string blobContainerName, string blobName, Stream destination)
-        {
-            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
-            return await blobClient.DownloadToAsync(destination);
-        }
-
-
-        public virtual Azure.Response DownloadTo(string blobContainerName, string blobName, Stream destination, CancellationToken cancellationToken)
+        public virtual Azure.Response DownloadBlobToStream(string blobContainerName, string blobName, Stream destination, CancellationToken cancellationToken)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadTo(destination, cancellationToken);
         }
 
-        public virtual async Task<Azure.Response> DownloadToAsync(string blobContainerName, string blobName, Stream destination, CancellationToken cancellationToken)
-        {
-            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
-            return await blobClient.DownloadToAsync(destination, cancellationToken);
-        }
 
-        public virtual Azure.Response DownloadTo(string blobContainerName, string blobName, Stream destination, BlobDownloadToOptions options,
+        public virtual Azure.Response DownloadBlobToStream(string blobContainerName, string blobName, Stream destination, BlobDownloadToOptions options,
             CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
             return blobClient.DownloadTo(destination, options, cancellationToken);
         }
 
+        #endregion
 
-        public virtual async Task<Azure.Response> DownloadToAsync(string blobContainerName, string blobName, Stream destination,
+
+        #region Download Blob Contents to Stream
+
+        public virtual async Task<Azure.Response> DownloadBlobToStreamAsync(string blobContainerName, string blobName, Stream destination)
+        {
+            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
+            return await blobClient.DownloadToAsync(destination);
+        }
+
+        public virtual async Task<Azure.Response> DownloadBlobToStreamAsync(string blobContainerName, string blobName, Stream destination, CancellationToken cancellationToken)
+        {
+            var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
+            return await blobClient.DownloadToAsync(destination, cancellationToken);
+        }
+
+        public virtual async Task<Azure.Response> DownloadBlobToStreamAsync(string blobContainerName, string blobName, Stream destination,
             BlobDownloadToOptions options, CancellationToken cancellationToken = default)
         {
             var blobClient = GetBlobBaseClientCore(blobContainerName, blobName);
@@ -1105,7 +1173,6 @@ namespace BlobStorageExtensions
 
         #region Client Getters
 
-        // Not sure if we really need these
 
 
         protected internal virtual Azure.Storage.Blobs.Specialized.BlobBaseClient GetBlobBaseClientCore(string blobContainerName, string blobName)
